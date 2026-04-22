@@ -1,142 +1,88 @@
 # Audio Converter
 
-Desktop application built with Python and PySide6 to batch-convert audio files with per-file format selection.
+Desktop Python app for batch audio conversion with a visual interface, support for large files, and per-file settings.
 
-This tool converts each input file independently. It does not merge tracks.
+This tool converts audio files individually; it does not merge tracks together.
 
 ## Features
 
-- Clean desktop UI with drag-and-drop support.
-- Per-row output format in the same queue.
-- Selective format apply using row checkboxes.
-- Editable output name per file.
-- Supported formats: MP3, M4A, AAC, WAV, FLAC, OGG, OPUS, ALAC, WMA, AIFF.
-- FFmpeg-based conversion suitable for large/long files.
-- Per-file progress and cancellation support.
-- Metadata preservation enabled by default.
-- User-selected output folder.
-- Optional auto-open output folder after conversion.
-- Optional format suffix in output file names (for example, `songmp3.mp3` vs `song.mp3`).
-- Resizable table columns with horizontal scrolling when needed.
-- Built-in settings dialog with English/Spanish language and color customization.
-- Persistent preferences across sessions.
+- Graphical interface with a file list.
+- Different output format per file in the same queue.
+- Per-row selection column to apply format only to checked files.
+- Editable output name per file from the Output name column.
+- Support for multiple formats: MP3, M4A, AAC, WAV, FLAC, OGG, OPUS, ALAC, WMA, and AIFF.
+- FFmpeg-based conversion, ideal for long or heavy files.
+- Per-file progress and process cancellation.
+- Metadata preservation enabled by default for all conversions.
+- Output folder selection.
+- Option to automatically open the output folder when finished.
+- Option to add or remove the format in the output name (for example `filemp3.mp3` or `file.mp3`).
+- Queue columns can be resized in real time, with horizontal scroll when needed.
+- Gear button in the top panel to change language (es/en) and adjust colors manually.
+- Preferences persist between sessions (language, colors, default format, and more).
+- Default output path points to the user Music folder (for example `C:\Users\<user>\Music`).
+- Main button uses a cyan style by default (`#0ab9cc`), while keeping customization through settings.
 
 ## Requirements
 
-- Python 3.10+
-- FFmpeg and FFprobe available in PATH
+- Python 3.10 or newer.
+- FFmpeg and FFprobe installed and available in PATH.
 
-To verify FFmpeg availability:
+## Quick Start
 
-```bash
-ffmpeg -version
-ffprobe -version
-```
-
-If commands are not found, install FFmpeg and add its `bin` directory to your system PATH.
-
-### Install FFmpeg
-
-Use one of the following options depending on your OS.
-
-#### Windows
-
-Option 1 (recommended, with winget):
-
-```powershell
-winget install --id Gyan.FFmpeg --source winget
-```
-
-Option 2 (with Chocolatey):
-
-```powershell
-choco install ffmpeg
-```
-
-Option 3 (manual):
-
-1. Download a build from https://www.gyan.dev/ffmpeg/builds/ (Essentials build is enough).
-2. Extract it, for example to `C:\ffmpeg`.
-3. Add `C:\ffmpeg\bin` (or your extracted `bin` folder) to system PATH.
-4. Close and reopen your terminal.
-
-#### macOS
-
-With Homebrew:
-
-```bash
-brew install ffmpeg
-```
-
-#### Linux
-
-Ubuntu / Debian:
-
-```bash
-sudo apt update
-sudo apt install ffmpeg
-```
-
-Tested on Ubuntu 24.04, the command above is the expected/default path.
-If `apt` cannot find `ffmpeg`, enable the `universe` repository and retry:
-
-```bash
-sudo add-apt-repository universe
-sudo apt update
-sudo apt install ffmpeg
-```
-
-Fedora:
-
-```bash
-sudo dnf install ffmpeg
-```
-
-Arch Linux:
-
-```bash
-sudo pacman -S ffmpeg
-```
-
-After installation, verify again:
-
-```bash
-ffmpeg -version
-ffprobe -version
-```
-
-## Setup
-
-1. Clone or download this repository.
+1. Clone the repository.
 2. Create and activate a virtual environment.
 3. Install dependencies.
+4. Ensure FFmpeg is available.
+5. Run the app.
 
-### Windows (PowerShell)
+## Create A Virtual Environment
+
+Windows (PowerShell):
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
 ```
 
-### macOS / Linux
+macOS/Linux:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
 ```
 
-On Ubuntu 24.04, you may need to install the matching `venv` package first before creating the environment:
+Ubuntu 24.04 note:
 
 ```bash
 sudo apt install python3.12-venv
 ```
 
-If your system is using another version instead, install the matching package for that version:
+If your system uses a different Python minor version, install the matching `python3.x-venv` package.
+
+## Installation
 
 ```bash
-sudo apt install python3.11-venv
+pip install -r requirements.txt
+```
+
+On Windows, if FFmpeg is not in PATH, install it with one of these options:
+
+```powershell
+winget install --id Gyan.FFmpeg --source winget
+```
+
+or
+
+```powershell
+choco install ffmpeg
+```
+
+Quick check:
+
+```bash
+ffmpeg -version
+ffprobe -version
 ```
 
 ## Run
@@ -145,46 +91,54 @@ sudo apt install python3.11-venv
 python main.py
 ```
 
-On Windows you can also use:
+You can also use the command installed by the project if you install the package:
+
+```bash
+audio-converter
+```
+
+On Windows, you can also use:
 
 ```bat
 run.bat
 ```
 
-## Optional package install
-
-If you want to install the app as a local package and use the command entry point:
-
-```bash
-pip install .
-audio-converter
-```
-
 ## Usage
 
-1. Add one or more files (or a full folder).
-2. Optionally check specific rows in the first column.
-3. Set a format per row, or use `Default format` + `Apply format`.
-4. Edit output names if needed.
-5. Configure bitrate, sample rate, and channels.
-6. Choose the output folder.
-7. Optionally enable format suffix and auto-open folder.
-8. Start conversion.
+1. Add one or more files.
+2. Check rows in the first column if you want to apply format only to specific files.
+3. If you click the header of that checkbox column, you can check or uncheck all rows.
+4. Choose a different format in each row if you want mixed outputs in a single run.
+5. You can also use Default format + Apply format to change multiple files at once.
+6. Select the output folder with the folder icon, between the Output label and the path.
+7. If needed, change the output name in the Output name column.
+8. Adjust bitrate, sample rate, and channels if required.
+9. Choose whether to add the format to the output name.
+10. Optional: enable Open folder when done.
+11. Start conversion.
+12. Use the top gear for language and manual color settings.
 
-## Configuration and persistence
+Note: the Add format to name checkbox is in Output settings, to the right of the path block.
 
-- Preferences are automatically stored in `app_settings.json` at project root.
-- Saved settings include language, color theme overrides, default format, bitrate, sample rate, channels, suffix toggle, open-on-finish toggle, and output folder.
+## Technical Notes
 
-## Troubleshooting
+- Large files are not fully loaded into memory; FFmpeg processes them in streaming mode.
+- Output is concentrated in a user-selected folder, and each file name can be customized from the table.
+- Preferences are saved in `app_settings.json` at the project root.
 
-- Conversion does not start:
-	- Verify `ffmpeg` and `ffprobe` are installed and accessible from terminal.
-- Output names collide:
-	- The app automatically appends numeric suffixes to avoid overwriting files.
-- Preferences seem outdated:
-	- Close the app normally so settings are written on exit.
+## Repository Hygiene
 
-## Documentation
+- Local runtime artifacts (virtual environments, logs, output files, and generated metadata) are ignored through `.gitignore`.
+- Avoid committing user-specific settings and runtime outputs.
 
-See `Doc.md` for the full UI and workflow reference.
+## Development And Contribution
+
+- Contribution guide: `CONTRIBUTING.md`
+- Changelog: `CHANGELOG.md`
+- CI workflow: `.github/workflows/ci.yml`
+
+The CI workflow validates imports and runs a syntax compilation check.
+
+## License
+
+This project is licensed under the MIT License. See `LICENSE`.
